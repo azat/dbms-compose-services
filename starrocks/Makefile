@@ -1,4 +1,4 @@
-PHONY: all
+.PHONY: all start wait spawn stop stop-force
 
 all: start wait spawn stop
 
