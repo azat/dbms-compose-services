@@ -1,0 +1,37 @@
+---
+version: '2.1'
+
+# TODO volumes:
+# - HISTFILE
+# - mysql history
+# - or simply HOME
+
+services:
+  backend:
+    image: starrocks/be-ubuntu:main
+    container_name: starrocks-backend
+    hostname: starrocks-backend
+    command: be/bin/start_be.sh
+    ports:
+      - 8040:8040  # HTTP
+      - 9050:9050  # For FE
+    volumes:
+      - ./starrocks-data:/opt/starrocks/be/storage
+
+  frontend:
+    image: starrocks/fe-ubuntu:main
+    container_name: starrocks-frontend
+    hostname: starrocks-frontend
+    depends_on:
+      - backend
+    command: fe/bin/start_fe.sh
+    ports:
+      - 9030:9030  # MYSQL
+      - 8030:8030  # HTTP
+
+  # docker exec -it starrocks-backend mysql -P9030 -h starrocks-frontend
+  client:
+    image: mariadb
+    command: sh -c 'sleep 30; mysql -vvv -hstarrocks-frontend -P9030 -uroot'
+    depends_on:
+      - frontend
