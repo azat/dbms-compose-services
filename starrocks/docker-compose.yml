@@ -16,7 +16,8 @@ services:
       - 8040:8040  # HTTP
       - 9050:9050  # For FE
     volumes:
-      - ./starrocks-data:/opt/starrocks/be/storage
+      - ./starrocks-be/storage:/opt/starrocks/be/storage
+      - ./starrocks-be/log:/opt/starrocks/be/log
 
   frontend:
     image: starrocks/fe-ubuntu:main
@@ -24,10 +25,18 @@ services:
     hostname: starrocks-frontend
     depends_on:
       - backend
-    command: fe/bin/start_fe.sh
+    # By default it uses IP addresses, and after containers restart IP
+    # addresses likely will be changed and FE will not be able to access BE
+    # [1].
+    #
+    #   [1]: https://docs.starrocks.io/en-us/latest/administration/enable_fqdn
+    command: fe/bin/start_fe.sh --host_type FQDN
     ports:
       - 9030:9030  # MYSQL
       - 8030:8030  # HTTP
+    volumes:
+      - ./starrocks-fe/meta:/opt/starrocks/fe/meta
+      - ./starrocks-fe/log:/opt/starrocks/fe/log
 
   # docker exec -it starrocks-backend mysql -P9030 -h starrocks-frontend
   client:
