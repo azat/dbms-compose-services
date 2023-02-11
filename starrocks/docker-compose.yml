@@ -1,11 +1,6 @@
 ---
 version: '2.1'
 
-# TODO volumes:
-# - HISTFILE
-# - mysql history
-# - or simply HOME
-
 services:
   backend:
     image: starrocks/be-ubuntu:main
@@ -18,6 +13,8 @@ services:
     volumes:
       - ./starrocks-be/storage:/opt/starrocks/be/storage
       - ./starrocks-be/log:/opt/starrocks/be/log
+      # Preserve bash & mysql client history
+      - ./starrocks-be/root:/root
 
   frontend:
     image: starrocks/fe-ubuntu:main
@@ -37,6 +34,8 @@ services:
     volumes:
       - ./starrocks-fe/meta:/opt/starrocks/fe/meta
       - ./starrocks-fe/log:/opt/starrocks/fe/log
+      # Preserve bash & mysql client history
+      - ./starrocks-fe/root:/root
 
   # docker exec -it starrocks-backend mysql -P9030 -h starrocks-frontend
   client:
