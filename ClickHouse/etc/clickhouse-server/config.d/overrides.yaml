@@ -1,0 +1,11 @@
+zookeeper:
+  node:
+    host: keeper
+    port: 9181
+
+remote_servers:
+  default:
+    "@replace": "replace"
+    node:
+    - host: clickhouse-1
+    - host: clickhouse-2

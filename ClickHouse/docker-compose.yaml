@@ -1,0 +1,35 @@
+services:
+  clickhouse-base:
+    image: clickhouse/clickhouse-server:latest
+    volumes:
+      - ./etc/clickhouse-server/config.d/overrides.yaml:/etc/clickhouse-server/config.d/overrides.yaml
+      - /var/lib/clickhouse
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=
+    ports:
+      - "8123"   # HTTP interface
+      - "9000"   # Native interface
+      - "9009"   # Interserver port
+
+  clickhouse-1:
+    extends: clickhouse-base
+    container_name: clickhouse-1
+    depends_on:
+      - keeper
+
+  clickhouse-2:
+    extends: clickhouse-base
+    container_name: clickhouse-2
+    depends_on:
+      - keeper
+
+  keeper:
+    image: clickhouse/clickhouse-keeper:latest
+    container_name: keeper
+    entrypoint: "clickhouse-keeper -- --listen_host=0.0.0.0"
+    volumes:
+      - /var/lib/clickhouse-keeper
+    ports:
+      - "9181"   # Keeper client port
+      - "9234"   # Internal communication port
