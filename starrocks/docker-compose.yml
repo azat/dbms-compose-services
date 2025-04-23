@@ -3,7 +3,7 @@ version: '2.1'
 
 services:
   backend:
-    image: starrocks/be-ubuntu:main
+    image: starrocks/be-ubuntu:latest
     container_name: starrocks-backend
     hostname: starrocks-backend
     command: be/bin/start_be.sh
@@ -17,7 +17,7 @@ services:
       - ./starrocks-be/root:/root
 
   frontend:
-    image: starrocks/fe-ubuntu:main
+    image: starrocks/fe-ubuntu:latest
     container_name: starrocks-frontend
     hostname: starrocks-frontend
     depends_on:
@@ -54,7 +54,7 @@ services:
   #   [1]: https://docs.starrocks.io/en-us/latest/administration/Scale_up_down
   #
   #backend-2:
-  #  image: starrocks/be-ubuntu:main
+  #  image: starrocks/be-ubuntu:latest
   #  container_name: starrocks-backend-2
   #  hostname: starrocks-backend-2
   #  command: be/bin/start_be.sh
