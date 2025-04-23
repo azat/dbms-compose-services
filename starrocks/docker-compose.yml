@@ -48,21 +48,22 @@ services:
   # You can simply uncomment backend-2 section, and run:
   #
   #     docker-compose up -d backend-2
+  #     docker exec starrocks-backend mysql -vvv -hstarrocks-frontend -P9030 -uroot -e "ALTER SYSTEM ADD BACKEND 'starrocks-backend-2:9050'"
   #
   # Note, this will start auto scale out of data [1].
   #
   #   [1]: https://docs.starrocks.io/en-us/latest/administration/Scale_up_down
   #
-  #backend-2:
-  #  image: starrocks/be-ubuntu:latest
-  #  container_name: starrocks-backend-2
-  #  hostname: starrocks-backend-2
-  #  command: be/bin/start_be.sh
-  #  ports:
-  #    - 8040  # HTTP
-  #    - 9050  # For FE
-  #  volumes:
-  #    - ./starrocks-be-2/storage:/opt/starrocks/be/storage
-  #    - ./starrocks-be-2/log:/opt/starrocks/be/log
-  #    # Preserve bash & mysql client history
-  #    - ./starrocks-be-2/root:/root
+  backend-2:
+    image: starrocks/be-ubuntu:latest
+    container_name: starrocks-backend-2
+    hostname: starrocks-backend-2
+    command: be/bin/start_be.sh
+    ports:
+      - 8040  # HTTP
+      - 9050  # For FE
+    volumes:
+      - ./starrocks-be-2/storage:/opt/starrocks/be/storage
+      - ./starrocks-be-2/log:/opt/starrocks/be/log
+      # Preserve bash & mysql client history
+      - ./starrocks-be-2/root:/root
