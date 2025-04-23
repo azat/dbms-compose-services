@@ -9,7 +9,7 @@ services:
     command: be/bin/start_be.sh
     ports:
       - 8040:8040  # HTTP
-      - 9050:9050  # For FE
+      - 9051:9050  # For FE (9050 overlaps with tor)
     volumes:
       - ./starrocks-be/storage:/opt/starrocks/be/storage
       - ./starrocks-be/log:/opt/starrocks/be/log
