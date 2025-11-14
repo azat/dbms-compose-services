@@ -37,10 +37,10 @@ services:
       # Preserve bash & mysql client history
       - ./starrocks-fe/root:/root
 
-  # docker exec -it starrocks-backend mysql -P9030 -h starrocks-frontend
+  # docker exec -it starrocks-backend mariadb -P9030 -h starrocks-frontend
   client:
     image: mariadb
-    command: sh -c 'sleep 30; mysql -vvv -hstarrocks-frontend -P9030 -uroot'
+    command: sh -c 'sleep 30; mariadb -vvv -hstarrocks-frontend -P9030 -uroot'
     depends_on:
       - frontend
 
